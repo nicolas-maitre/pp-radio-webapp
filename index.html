@@ -167,10 +167,52 @@
             <!-- Compteur d'auditeurs (masqué par défaut) -->
             <p id="compteur-auditeurs" style="display: none; position: absolute; bottom: 0px; left: 0px; margin: 0.75em 3.75em; font-size: 4vh; opacity: 0.25;"></p>
     
-            <!-- Bouton mettre en favori
-            <i id="bouton-favori" style="font-size: 7.0vh; margin: 1.5vh 0 1.5vh 0; opacity: 0.15;" class="zmdi zmdi-star-circle"></i> -->
-            <!-- Bouton lecture/pause -->
-            <i id="bouton-controle" class="zmdi zmdi-play-circle" style="font-size: 10.0vh; margin: 0 2vh 0 2vh;"></i>
+                <!-- Bouton mettre en favori-->
+                <div style="width: 7vh; display: inline-block; position: relative;">
+                    <!-- <i id="bouton-favori" style="font-size: 7.0vh; margin: 1.5vh 0; opacity: 0.15;" class="zmdi zmdi-star-circle"></i>  -->
+                </div>
+                <!-- Bouton lecture/pause -->
+                <i id="bouton-controle" class="zmdi zmdi-play-circle" style="font-size: 10.0vh; margin: 0 2vh"></i>
+
+                <!-- Controle du volume-->
+                <style>
+                    #button-audio > i{
+                        font-size: 7.0vh; 
+                        /* margin: 1.5vh 0;  */
+                        opacity: 0.15;
+                        transition: 500ms opacity;
+                    }
+                    #volume-container:hover > #button-audio > i{
+                        opacity: 1;
+                    }
+                    #input-volume{
+                        position: absolute;
+                        left: 0;
+                        height: 15vh;
+                        width: 7vh;
+                        margin:0;
+                        -webkit-appearance: slider-vertical;
+                        bottom:0;
+                        opacity:0;
+                        visibility: hidden;
+                        transition: 200ms bottom, 200ms opacity, 200ms visibility;
+                    }
+                    
+                    #volume-container:hover > #input-volume{
+                        bottom:7vh;
+                        opacity:1;
+                        visibility: visible;
+                    }
+                </style>
+                <div id="volume-container" style="width: 7vh; display: inline-block; position: relative; ">
+                    <div id="button-audio">
+                        <i id="bouton-audio-off" style=" display: none;" class=" zmdi zmdi-volume-off"></i> 
+                        <i id="bouton-audio-mute" style=" display: none;" class=" zmdi zmdi-volume-mute"></i> 
+                        <i id="bouton-audio-down" style=" display: none;" class=" zmdi zmdi-volume-down"></i> 
+                        <i id="bouton-audio-up" class=" zmdi zmdi-volume-up"></i> 
+                    </div>
+                    <input id="input-volume" orient="vertical"  type="range" />
+                </div>
     
             <!-- Texte d'information sur émission actuelle / à venir -->
             <p id="texte-infoemission" style="position: absolute; text-align: right; bottom: 0; right: 0; margin: 1.2em; width: 35vw; font-size: 2.5vh;"></p>
