@@ -1,3 +1,5 @@
+"use strict";
+
 // VARIABLES
 // Récupération des paramètres passés en URL
 var parametresUrl = new URLSearchParams(location.search);
@@ -21,6 +23,16 @@ var imagesCartons = [
   ["Friday Night Fright", "images/poster-fridaynightfright.png"],
   ["Le Live", "images/poster-lelive.png"],
 ];
+const ecrans = {
+  endirect: "Radio Puissance Parcs",
+  historique: "Historique des morceaux",
+  emissions: "Emissions",
+  programme: "Grille des programmes",
+  message: "Message reçu",
+  faq: "Foire aux Questions",
+  aide: "Aide à l'écoute",
+  visualiseur: "Visualiseur",
+};
 var compteurSyntheInfos = 0;
 var syntheInfos = [
   "Retrouvez le podcast Puissance Parcs un vendredi sur deux, sur SoundCloud et la plupart des plateformes audio...",
@@ -57,7 +69,7 @@ setInterval(function () {
   }
 
   // A l'heure fixe (XX:00:00), afficher le carton avec le logo de la radio
-  if (dateActuelle.getMinutes() === 00 && dateActuelle.getSeconds() === 00) {
+  if (dateActuelle.getMinutes() === 0 && dateActuelle.getSeconds() === 0) {
     afficherCarton("images/poster-radiopuissanceparcs.png", 2000);
   }
 }, 1000);
@@ -148,34 +160,48 @@ function defilementRegulierInfos() {
 
 // Machine d'états : Ecrans
 function changerEcran(ecranDemande) {
+  if (ecranActuel === ecranDemande) {
+    console.log(`Ecran ${ecranDemande} déjà affiché...`);
+    return;
+  }
+
+  if (!Object.keys(ecrans).includes(ecranDemande)) {
+    console.error("Erreur: ecran inexistant !");
+    return;
+  }
+
+  //Cacher ecran actuel
+  if (ecranActuel === "visualiseur") {
+    //cas special visualisateur
+    $("#mode-visualiseur").hide("fade", 500, function () {
+      $("#mode-normal").show("fade", 500);
+    });
+  } else if (ecranDemande !== "visualiseur") {
+    //cas normal
+    $(`#ecran-${ecranActuel}`).hide();
+  }
+
+  //Afficher nouvel ecran
+  if (ecranDemande === "visualiseur") {
+    //cas special visualisateur
+    $("#mode-normal").hide("fade", 500, function () {
+      $(`#ecran-${ecranActuel}`).hide();
+      $("#mode-visualiseur").show("fade", 500);
+    });
+  } else {
+    //cas normal
+    $(`#ecran-${ecranDemande}`).show();
+    $("#titre-ecran").text(ecrans[ecranDemande]); // Changer le titre
+  }
+
+  $("#menu-navigation").hide("slide", 250); // Fermer le menu (s'il était ouvert)
+
+  //cas spéciaux nouvel ecran
   switch (ecranDemande) {
-    // DEMANDE: Ecran endirect
-    case "endirect":
-      ecranActuel = "endirect";
-      $("#mode-visualiseur").hide("fade", 500, function () {
-        $("#mode-normal").show("fade", 500);
-      });
-      $("#titre-ecran").text("Radio Puissance Parcs"); // Changer le titre
-      $("#ecran-endirect").show(); // Afficher/masquer les écrans
-      $("#ecran-historique").hide();
-      $("#ecran-emissions").hide();
-      $("#ecran-programme").hide();
-      $("#ecran-message").hide();
-      $("#ecran-faq").hide();
-      $("#ecran-aide").hide();
-      $("#menu-navigation").hide("slide", 250); // Fermer le menu (s'il était ouvert)
-      break;
-
-    // DEMANDE: Ecran Historique
     case "historique":
-      ecranActuel = "historique";
-      $("#mode-visualiseur").hide("fade", 500, function () {
-        $("#mode-normal").show("fade", 500);
-      });
-
       // Vider, puis remplir la liste avec le tableau des derniers morceaux, et retour à la ligne à chaque fois
       $("#liste-historique-lecture").empty();
-      historiqueMetas.forEach(function (element) {
+      historiqueMetas.forEach((element) => {
         //$( "#liste-historique-lecture" ).append( "<p>" + element + "</p>" )
         $("#liste-historique-lecture").append(
           "<p><span style='opacity: 0.25;'>" +
@@ -186,133 +212,24 @@ function changerEcran(ecranDemande) {
         );
       });
 
-      $("#titre-ecran").text("Historique des morceaux"); // Changer le titre
-      $("#ecran-endirect").hide(); // Afficher/masquer les écrans
-      $("#ecran-historique").show();
-      $("#ecran-emissions").hide();
-      $("#ecran-programme").hide();
-      $("#ecran-message").hide();
-      $("#ecran-faq").hide();
-      $("#ecran-aide").hide();
-      $("#menu-navigation").hide("slide", 250); // Fermer le menu (s'il était ouvert)
-      break;
-
-    // DEMANDE: Ecran Emissions
-    case "emissions":
-      ecranActuel = "emissions";
-      $("#mode-visualiseur").hide("fade", 500, function () {
-        $("#mode-normal").show("fade", 500);
-      });
-      $("#titre-ecran").text("Emissions"); // Changer le titre
-      $("#ecran-endirect").hide(); // Afficher/masquer les écrans
-      $("#ecran-historique").hide();
-      $("#ecran-emissions").show();
-      $("#ecran-programme").hide();
-      $("#ecran-message").hide();
-      $("#ecran-faq").hide();
-      $("#ecran-aide").hide();
-      $("#menu-navigation").hide("slide", 250); // Fermer le menu (s'il était ouvert)
-      break;
-
-    // DEMANDE: Ecran Grille des programmes
-    case "programme":
-      ecranActuel = "programme";
-      $("#mode-visualiseur").hide("fade", 500, function () {
-        $("#mode-normal").show("fade", 500);
-      });
-      construireTableauProgrammes(); // Construire dynamiquement la grille des programmes
-      $("#titre-ecran").text("Grille des programmes"); // Changer le titre
-      $("#ecran-endirect").hide(); // Afficher/masquer les écrans
-      $("#ecran-historique").hide();
-      $("#ecran-emissions").hide();
-      $("#ecran-programme").show();
-      $("#ecran-message").hide();
-      $("#ecran-faq").hide();
-      $("#ecran-aide").hide();
-      $("#menu-navigation").hide("slide", 250); // Fermer le menu (s'il était ouvert)
-      break;
-
-    // DEMANDE: Ecran Message
     case "message":
-      ecranActuel = "message";
-      $("#mode-visualiseur").hide("fade", 500, function () {
-        $("#mode-normal").show("fade", 500);
-      });
-      $("#titre-ecran").text("Message reçu"); // Changer le titre
-      $("#ecran-endirect").hide(); // Afficher/masquer les écrans
-      $("#ecran-historique").hide();
-      $("#ecran-emissions").hide();
-      $("#ecran-programme").hide();
-      $("#ecran-message").show();
-      $("#ecran-faq").hide();
-      $("#ecran-aide").hide();
-      $("#menu-navigation").hide("slide", 250); // Fermer le menu (s'il était ouvert)
       messageConsulte = true;
       break;
 
-    // DEMANDE: Ecran FAQ
-    case "faq":
-      ecranActuel = "faq";
-      $("#mode-visualiseur").hide("fade", 500, function () {
-        $("#mode-normal").show("fade", 500);
-      });
-      $("#titre-ecran").text("Foire aux Questions"); // Changer le titre
-      $("#ecran-endirect").hide(); // Afficher/masquer les écrans
-      $("#ecran-historique").hide();
-      $("#ecran-emissions").hide();
-      $("#ecran-programme").hide();
-      $("#ecran-message").hide();
-      $("#ecran-faq").show();
-      $("#ecran-aide").hide();
-      $("#menu-navigation").hide("slide", 250); // Fermer le menu (s'il était ouvert)
-      break;
-
-    // DEMANDE: Ecran Aide
-    case "aide":
-      ecranActuel = "aide";
-      $("#mode-visualiseur").hide("fade", 500, function () {
-        $("#mode-normal").show("fade", 500);
-      });
-      $("#titre-ecran").text("Aide à l'écoute"); // Changer le titre
-      $("#ecran-endirect").hide(); // Afficher/masquer les écrans
-      $("#ecran-historique").hide();
-      $("#ecran-emissions").hide();
-      $("#ecran-programme").hide();
-      $("#ecran-message").hide();
-      $("#ecran-faq").hide();
-      $("#ecran-aide").show();
-      $("#menu-navigation").hide("slide", 250); // Fermer le menu (s'il était ouvert)
-      break;
-
-    // DEMANDE: Mode Visualiseur
     case "visualiseur":
       // Si l'écran est en mode portrait...
       if (window.innerHeight > window.innerWidth) {
         // Afficher un message d'alerte et ne rien faire
         alert("Orientation Paysage recommandée pour ce mode...");
       }
-      ecranActuel = "visualiseur";
 
       // Passage en plein écran
-      if (document.documentElement.requestFullscreen) {
-        // Chromium, Firefox
-        document.documentElement.requestFullscreen();
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        // Safari
-        document.documentElement.webkitRequestFullscreen();
-      }
-
-      // Adapter l'écran
-      $("#mode-normal").hide("fade", 500, function () {
-        $("#mode-visualiseur").show("fade", 500);
-      });
-      break;
-
-    // CATCHALL
-    default:
-      console.log("Erreur: ecran inexistant !");
+      document.documentElement.requestFullscreen?.(); // Chromium, Firefox
+      document.documentElement.webkitRequestFullscreen?.(); // Safari
       break;
   }
+
+  ecranActuel = ecranDemande;
 }
 
 // Construction dynamique de l'affichage de la grille des programmes
