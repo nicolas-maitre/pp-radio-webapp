@@ -835,7 +835,11 @@ $(document).on("click", "#bouton-controle", function () {
   // Si le flux est actuellement en pause...
   if ($("#lecteur")[0].paused) {
     // Mettre en lecture
-    $("#lecteur").attr("src", "https://radio.puissanceparcs.fr:8443/radio");
+    // Le bust_cache est ajouté pour empêcher la mise en cache du flux audio sur firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=1129121)
+    $("#lecteur").attr(
+      "src",
+      "https://radio.puissanceparcs.fr:8443/radio#bust_cache=" + Date.now()
+    );
     $("#lecteur")[0].play();
     $("#bouton-controle").removeClass("zmdi-play-circle");
     $("#bouton-controle").addClass("zmdi-pause-circle");
