@@ -60,53 +60,55 @@
           background-color: Black;
         "
       >
+        <style>
+          .menu-link {
+            display: block;
+            font-size: 3vh;
+            margin-bottom: 3vh;
+            cursor: pointer;
+          }
+        </style>
         <!-- Menu de fonctions -->
         <a
           id="menu-endirect"
+          class="menu-link"
           onclick="changerEcran( 'endirect' )"
-          style="display: block; font-size: 3vh; margin-bottom: 3vh"
           >En direct</a
         >
         <a
           id="menu-visualiseur"
+          class="menu-link"
           onclick="changerEcran( 'visualiseur' )"
-          style="display: block; font-size: 3vh; margin-bottom: 3vh"
           >Visualiseur</a
         >
         <a
           id="menu-historique"
+          class="menu-link"
           onclick="changerEcran( 'historique' )"
-          style="display: block; font-size: 3vh; margin-bottom: 3vh"
           >Historique</a
         >
         <a
           id="menu-emissions"
+          class="menu-link"
           onclick="changerEcran( 'emissions' )"
-          style="display: block; font-size: 3vh; margin-bottom: 3vh"
           >Emissions</a
         >
         <a
           id="menu-programme"
+          class="menu-link"
           onclick="changerEcran( 'programme' )"
-          style="display: block; font-size: 3vh; margin-bottom: 3vh"
           >Programme</a
         >
-        <a
-          id="menu-faq"
-          onclick="changerEcran( 'faq' )"
-          style="display: block; font-size: 3vh; margin-bottom: 3vh"
+        <a id="menu-faq" class="menu-link" onclick="changerEcran( 'faq' )"
           >F.A.Q.</a
         >
-        <a
-          id="menu-aide"
-          onclick="changerEcran( 'aide' )"
-          style="display: block; font-size: 3vh; margin-bottom: 3vh"
+        <a id="menu-aide" class="menu-link" onclick="changerEcran( 'aide' )"
           >Aide</a
         >
         <a
           id="menu-message"
+          class="menu-link"
           onclick="changerEcran( 'message' )"
-          style="display: none; font-size: 3vh; margin-bottom: 3vh"
           >Message</a
         >
         <!-- Liens sociaux -->
@@ -185,7 +187,13 @@
       >
         <i
           id="bouton-menu"
-          style="position: absolute; z-index: 20; left: 0; font-size: 5vh"
+          style="
+            position: absolute;
+            z-index: 20;
+            left: 0;
+            font-size: 5vh;
+            cursor: pointer;
+          "
           class="zmdi zmdi-menu"
         ></i>
         <p
@@ -211,6 +219,7 @@
           right: 4vh;
           font-size: 5vh;
           opacity: 0.2;
+          cursor: pointer;
         "
         class="zmdi zmdi-fullscreen"
       ></i>
@@ -247,7 +256,7 @@
         <!-- Metadonnées -->
         <p
           id="metadonnees0"
-          style="text-align: center; margin: 5px; font-size: 4vh"
+          style="text-align: center; margin: 5px; font-size: 4vh; cursor: copy"
         ></p>
         <p
           id="metadonnees1"
@@ -680,7 +689,7 @@
         <i
           id="bouton-controle"
           class="zmdi zmdi-play-circle"
-          style="font-size: 10vh; margin: 0 2vh"
+          style="font-size: 10vh; margin: 0 2vh; cursor: pointer"
         ></i>
         <!-- Controle du volume-->
         <div
@@ -695,7 +704,7 @@
         >
           <div
             id="bouton-audio"
-            style="display: inline-block; text-align: left"
+            style="display: inline-block; text-align: left; cursor: pointer"
           >
             <i
               id="bouton-audio-off"
@@ -730,6 +739,7 @@
               width: 5vh;
               margin: 0;
               -webkit-appearance: slider-vertical;
+              cursor: ns-resize;
             "
           />
         </div>
