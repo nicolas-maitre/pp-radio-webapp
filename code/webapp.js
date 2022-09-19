@@ -787,6 +787,42 @@ $(document).on(
   }
 );
 
+const lecteur = $("#lecteur")[0];
+// contrôle du volume
+$("#input-volume").on("input", (evt) => {
+  const volume = evt.target.valueAsNumber;
+  lecteur.volume = volume;
+  if (lecteur.muted) {
+    lecteur.muted = false;
+  }
+  refreshVolumeIcon();
+});
+
+//Fonction muet sur le bouton audio
+$("#bouton-audio").click(() => {
+  lecteur.muted = !lecteur.muted;
+  refreshVolumeIcon();
+});
+
+//Met à jour les l'icone de volume en fonction des données du lecteur.
+function refreshVolumeIcon() {
+  $("#bouton-audio-off").hide();
+  $("#bouton-audio-mute").hide();
+  $("#bouton-audio-down").hide();
+  $("#bouton-audio-up").hide();
+
+  const volume = lecteur.volume;
+  if (lecteur.muted) {
+    $("#bouton-audio-off").show();
+  } else if (volume <= 0) {
+    $("#bouton-audio-mute").show();
+  } else if (volume <= 0.5) {
+    $("#bouton-audio-down").show();
+  } else {
+    $("#bouton-audio-up").show();
+  }
+}
+
 // FIN DU SCRIPT
 // Activation des intervalles de répétition
 setInterval(recuperationMessage, 60000);
