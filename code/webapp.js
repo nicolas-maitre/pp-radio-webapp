@@ -5,6 +5,7 @@
 var parametresUrl = new URLSearchParams(location.search);
 const afficherAuditeurs = parametresUrl.get("auditeurs");
 
+const BASE_PATH = "https://puissanceparcs.fr/radio/";
 // Variables générales
 var dateActuelle = new Date();
 var arraySyntheseProgrammes = [];
@@ -523,7 +524,7 @@ function recuperationsMetas() {
             // Si le texte figure dans cet élément...
             if (metaMorceauActuel.includes(element[0])) {
               // Alors changer la source de l'image
-              $("#visu-arriereplan").attr("src", element[1]);
+              $("#visu-arriereplan").attr("src", BASE_PATH + element[1]);
 
               // ... L'afficher
               $("#visu-arriereplan").show("fade", 2000);
@@ -572,7 +573,7 @@ function recuperationsMetas() {
 
 // Récupération du message de notification depuis le serveur
 function recuperationMessage() {
-  $.get("message.txt", function (donnees) {
+  $.get(BASE_PATH + "message.txt", function (donnees) {
     // Si le contenu est vide
     if (donnees === "") {
       // Enregistrer le message
