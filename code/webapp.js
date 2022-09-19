@@ -216,6 +216,10 @@ function changerEcran(ecranDemande) {
       messageConsulte = true;
       break;
 
+    case "programme":
+      construireTableauProgrammes();
+      break;
+
     case "visualiseur":
       // Si l'écran est en mode portrait...
       if (window.innerHeight > window.innerWidth) {
