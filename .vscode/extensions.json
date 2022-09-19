@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "oouo-diogo-perdigao.docthis",
+    "dbaeumer.vscode-eslint"
+  ]
+}
